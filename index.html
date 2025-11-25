@@ -131,8 +131,14 @@
                 <li>Натисни "Play" та насолоджуйся</li>
             </ol>
         </section>
+        
     </main>
-
+<div id="cart">
+    <h3>Кошик</h3>
+    <ul id="cart-items"></ul>
+    <p id="cart-empty">Кошик порожній</p>
+</div>
+<div id="pagination"></div>
     <footer>
         <p>Підтримка користувачів: support@ua.net</p>
         <div class="social">
@@ -149,6 +155,17 @@
             <img src="./images/photo_2024-09-18_20-20-37.jpg" alt="Google Play">
         </div>
     </footer>
+    <div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-year-genre"></p>
+        <p id="modal-description"></p>
+    </div>
+</div>
+
+
+<script src="script.js"></script>
 </body>
 </html>
 
