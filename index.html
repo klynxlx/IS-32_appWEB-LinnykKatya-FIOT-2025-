@@ -22,35 +22,65 @@
         <section class="category">
             <h2>Популярні фільми онлайн</h2>
             <div class="grid">
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Гаррі Поттер і філософський камінь"
+                data-year="2001, Пригоди"
+                data-price="120"
+                data-desc="">
                     <img src="./images/photo_2024-09-18_20-08-22.jpg" alt="Гаррі Поттер">
                     <p>Гаррі Поттер і філософський камінь</p>
                     <p>2001, Пригоди</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Оппенгеймер"
+                data-year="2023, Драми"
+                data-price="120"
+                data-desc="">
                     <img src="./images/photo_2024-09-18_22-42-04.jpg" alt="Оппенгеймер">
                     <p>Оппенгеймер</p>
                     <p>2023, Драми</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Джон Вік 4"
+                data-year="2023, Бойовики"
+                data-price="150"
+                data-desc=".">
                     <img src="./images/photo_2024-09-18_20-08-45.jpg" alt="Джон Вік 4">
                     <p>Джон Вік 4</p>
                     <p>2023, Бойовики</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Початок"
+                data-year="2010, Фантастика"
+                data-price="100"
+                data-desc="">
                     <img src="./images/photo_2024-09-18_20-08-50.jpg" alt="Початок">
                     <p>Початок</p>
                     <p>2010, Фантастика</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Інтерстеллар"
+                data-year="2014, Фантастика"
+                data-price="190"
+                data-desc="">
                     <img src="./images/photo_2024-09-18_20-08-55.jpg" alt="Інтерстеллар">
                     <p>Інтерстеллар</p>
                     <p>2014, Фантастика</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item"
+                data-title="Тілоохоронець кілера"
+                data-year="2017, Комедії"
+                data-price="120"
+                data-desc="">
                     <img src="./images/photo_2024-09-18_20-08-41.jpg" alt="Тілоохоронець кілера">
                     <p>Тілоохоронець кілера</p>
                     <p>2017, Комедії</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
             </div>
         </section>
@@ -63,31 +93,37 @@
                     <img src="./images/photo_2024-09-18_20-08-59.jpg" alt="Гра престолів">
                     <p>Гра престолів</p>
                     <p>2011 - 2019, Драми</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
                 <div class="grid-item">
                     <img src="./images/photo_2024-09-18_20-09-04.jpg" alt="Чорнобиль">
                     <p>Чорнобиль</p>
                     <p>2019, Драми</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
                 <div class="grid-item">
                     <img src="./images/photo_2024-09-18_20-09-08.jpg" alt="Ходячі мерці">
                     <p>Ходячі мерці</p>
                     <p>2010 - 2022, Трилери</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
                 <div class="grid-item">
                     <img src="./images/photo_2024-09-18_23-18-48.jpg" alt="Темні матерії">
                     <p>Темні матерії</p>
                     <p>2019 - 2022, Пригоди</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
                 <div class="grid-item">
                     <img src="./images/photo_2024-09-18_20-09-19.jpg" alt="Єллоустоун">
                     <p>Єллоустоун</p>
-                    <p>2018 - 2020, Драми</p>
+                    <p>2018 - 2020, Драми</p>\
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
                 <div class="grid-item">
                     <img src="./images/photo_2024-09-18_23-25-45.jpg" alt="Портрет вбивці">
                     <p>Портрет вбивці</p>
                     <p>2021 - 2023, Кримінал</p>
+                    <button class="add-btn">Додати у кошик</button>
                 </div>
             </div>
         </section>
@@ -133,12 +169,23 @@
         </section>
         
     </main>
-<div id="cart">
-    <h3>Кошик</h3>
-    <ul id="cart-items"></ul>
-    <p id="cart-empty">Кошик порожній</p>
+<div id="movies-container"></div>
+
+
+
+<button id="open-cart" class="cart-button">🛒 Кошик <span id="cart-count">0</span></button>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<div id="cart-panel" class="cart-panel">
+  <h2>Ваш кошик</h2>
+  <ul id="cart-list"></ul>
+  <div class="cart-total">Разом: <span id="cart-total-price">0</span> грн</div>
+  <button id="close-cart" class="close-btn">Закрити</button>
+  <div id="pagination" class="pagination"></div>
+
 </div>
-<div id="pagination"></div>
+
     <footer>
         <p>Підтримка користувачів: support@ua.net</p>
         <div class="social">

@@ -43,75 +43,167 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cartItems = [];
-    const cartList = document.getElementById("cart-items");
-    const cartEmpty = document.getElementById("cart-empty");
+let cart = [];
 
-    // Додаємо кнопку до кожного елемента
-    document.querySelectorAll(".grid-item").forEach(item => {
-        const addBtn = document.createElement("button");
-        addBtn.textContent = "Додати у кошик";
-        addBtn.style.display = "block";
-        addBtn.style.marginTop = "5px";
-        item.appendChild(addBtn);
+function updateCart() {
+    const list = document.getElementById("cart-list");
+    list.innerHTML = "";
 
-        addBtn.addEventListener("click", (event) => {
-        event.stopPropagation(); // !!! важливо, щоб не спрацював клік на .grid-item
-        const title = item.querySelector("p:first-of-type").textContent;
-        if (!cartItems.includes(title)) {
-            cartItems.push(title);
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${item.title} — ${item.price} грн
+            <button class="remove" data-index="${index}">✖</button>
+        `;
+        list.appendChild(li);
+    });
+
+    document.getElementById("cart-count").textContent = cart.length;
+    document.getElementById("cart-total-price").textContent = total;
+
+    document.querySelectorAll(".remove").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const index = btn.dataset.index;
+            cart.splice(index, 1);
             updateCart();
-        }
-    });
-    });
-
-    function updateCart() {
-        cartList.innerHTML = "";
-        if (cartItems.length === 0) {
-            cartEmpty.style.display = "block";
-        } else {
-            cartEmpty.style.display = "none";
-            cartItems.forEach(title => {
-                const li = document.createElement("li");
-                li.textContent = title;
-                cartList.appendChild(li);
-            });
-        }
-    }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const itemsPerPage = 4; // кількість елементів на сторінці
-    const grid = document.querySelector(".grid");
-    const gridItems = Array.from(grid.children);
-    const pagination = document.getElementById("pagination");
-
-    let currentPage = 1;
-    const totalPages = Math.ceil(gridItems.length / itemsPerPage);
-
-    function showPage(page) {
-        currentPage = page;
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-
-        gridItems.forEach((item, index) => {
-            item.style.display = (index >= start && index < end) ? "block" : "none";
         });
+    });
+}
 
-        renderPagination();
-    }
+// --- ДОДАВАННЯ У КОШИК ---
+document.querySelectorAll(".add-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
 
-    function renderPagination() {
-        pagination.innerHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.textContent = i;
-            if (i === currentPage) btn.disabled = true;
-            btn.addEventListener("click", () => showPage(i));
-            pagination.appendChild(btn);
-        }
-    }
+        const parent = btn.parentElement;
 
-    showPage(1); // показуємо першу сторінку
+        const film = {
+            title: parent.dataset.title,
+            year: parent.dataset.year,
+            price: Number(parent.dataset.price),
+            description: parent.dataset.desc
+        };
+
+        cart.push(film);
+        updateCart();
+    });
 });
+
+
+// --- ВІДКРИТТЯ / ЗАКРИТТЯ КОШИКА ---
+const cartPanel = document.getElementById("cart-panel");
+const overlay = document.getElementById("cart-overlay");
+
+document.getElementById("open-cart").onclick = () => {
+    cartPanel.classList.add("open");
+    overlay.classList.add("show");
+};
+
+document.getElementById("close-cart").onclick =
+overlay.onclick = () => {
+    cartPanel.classList.remove("open");
+    overlay.classList.remove("show");
+};
+
+
+let itemsPerPage = 5;       //  кількість елементів на сторінку
+let currentPage = 1;
+
+// --- ОНОВЛЕННЯ КОШИКА З ПАГІНАЦІЄЮ ---
+function updateCart() {
+    const list = document.getElementById("cart-list");
+    list.innerHTML = "";
+
+    let total = 0;
+    cart.forEach(item => total += item.price);
+
+    // --- ПАГІНАЦІЯ ---
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const itemsToShow = cart.slice(start, end);
+
+    // --- ВИВОДИМО ТІЛЬКИ ЕЛЕМЕНТИ ПОТОЧНОЇ СТОРІНКИ ---
+    itemsToShow.forEach((item, index) => {
+        const globalIndex = start + index;
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            ${item.title} — ${item.price} грн
+            <button class="remove" data-index="${globalIndex}">✖</button>
+        `;
+
+        list.appendChild(li);
+    });
+
+    // --- ОНОВЛЕННЯ ТЕКСТУ ---
+    document.getElementById("cart-count").textContent = cart.length;
+    document.getElementById("cart-total-price").textContent = total;
+
+    // --- ПАГІНАЦІЯ КНОПКИ ---
+    renderPagination();
+
+    // --- РЕМУВЕР ---
+    document.querySelectorAll(".remove").forEach(btn => {
+        btn.addEventListener("click", () => {
+            cart.splice(btn.dataset.index, 1);
+
+            if (currentPage > totalPages()) currentPage = totalPages();
+
+            updateCart();
+        });
+    });
+}
+
+// --- ПІДРАХУНОК КІЛЬКОСТІ СТОРІНОК ---
+function totalPages() {
+    return Math.ceil(cart.length / itemsPerPage);
+}
+
+// --- РЕНДЕР КНОПОК ПАГІНАЦІЇ ---
+function renderPagination() {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const pages = totalPages();
+
+    if (pages <= 1) return;
+
+    // Кнопка Попередня
+    if (currentPage > 1) {
+        const prev = document.createElement("button");
+        prev.textContent = "←";
+        prev.onclick = () => {
+            currentPage--;
+            updateCart();
+        };
+        pagination.appendChild(prev);
+    }
+
+    // Номери сторінок
+    for (let i = 1; i <= pages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add("active");
+
+        btn.onclick = () => {
+            currentPage = i;
+            updateCart();
+        };
+        pagination.appendChild(btn);
+    }
+
+    // Кнопка Наступна
+    if (currentPage < pages) {
+        const next = document.createElement("button");
+        next.textContent = "→";
+        next.onclick = () => {
+            currentPage++;
+            updateCart();
+        };
+        pagination.appendChild(next);
+    }
+}

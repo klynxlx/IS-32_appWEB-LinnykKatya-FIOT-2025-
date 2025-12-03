@@ -218,3 +218,94 @@ footer {
     cursor: pointer;
 }
 .close:hover { color: #000; }
+
+
+/* --- CART BUTTON --- */
+.cart-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #ff5c5c;
+    color: white;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+.cart-button:hover {
+    transform: scale(1.05);
+}
+
+/* --- CART PANEL --- */
+
+.cart-panel {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 350px;
+    height: 100%;
+    background: rgb(0, 0, 0);
+    padding: 20px;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: right 0.35s ease;
+}
+
+.cart-panel.open {
+    right: 0; /* виїжджає */
+}
+
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: none;
+    z-index: 900;
+}
+.cart-overlay.show {
+    display: block;
+}
+
+/* --- CART ITEMS --- */
+#cart-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #efefef;
+}
+.cart-total {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* --- PAGINATION --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.pagination button {
+    padding: 6px 12px;
+    border: none;
+    background: #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.pagination button:hover {
+    background: #bbb;
+}
+
+.pagination .active {
+    background: #ff6600;
+    color: white;
+}
+
